@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SloNick 2.0 Beta - Музыкальный плеер</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="  /icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Заголовок окна (titlebar) -->
+    <div class="titlebar">
+      <div class="titlebar-title">SloNick 2.0_Beta</div>
+      <div class="titlebar-controls">
+        <button id="minimize-btn" class="titlebar-btn">
+          <span class="material-icons">remove</span>
+        </button>
+        <button id="maximize-btn" class="titlebar-btn">
+          <span class="material-icons">crop_square</span>
+        </button>
+        <button id="close-btn" class="titlebar-btn">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Основной интерфейс приложения -->
+    <div class="main-container">
+      <!-- Левая панель с плейлистами -->
+      <div class="sidebar">
+        <!-- Логотип приложения -->
+        <div class="app-logo">
+          <!-- <span class="material-icons">music_note</span> -->
+          <img src="assets/icons/trans_bg(1).png" alt="SloNick 2.0 Beta" class="app-logo-image">
+        </div>
+
+        <!-- Навигационное меню -->
+        <div class="sidebar-section">
+          <div class="nav-item active">
+            <span class="material-icons">home</span>
+            <span>Главная</span>
+          </div>
+          <div class="nav-item">
+            <span class="material-icons">library_music</span>
+            <span>Библиотека</span>
+          </div>
+          <div class="nav-item">
+            <span class="material-icons">settings</span>
+            <span>Настройки</span>
+          </div>
+        </div>
+
+        <!-- Заголовок плейлистов -->
+        <div class="sidebar-header">
+          <h3>Плейлисты</h3>
+          <button id="add-playlist-btn" class="add-btn">
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+        
+        <!-- Список плейлистов -->
+        <div id="playlists-container" class="playlists-list">
+          <!-- Список плейлистов будет добавлен через JavaScript -->
+        </div>
+      </div>
+
+      <!-- Основное содержимое -->
+      <div class="content">
+        <!-- Главная страница -->
+        <div class="content-section" id="home-section">
+          <!-- Верхняя панель с поиском и другими кнопками -->
+          <div class="toolbar">
+            <div class="search-container">
+              <span class="material-icons">search</span>
+              <input type="text" id="search-input" placeholder="Поиск треков...">
+            </div>
+            <div class="toolbar-actions">
+              <button id="import-btn" class="action-btn" title="Импортировать аудио файлы">
+                <span class="material-icons">file_upload</span>
+              </button>
+              <button id="folder-btn" class="action-btn" title="Выбрать папку">
+                <span class="material-icons">folder</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Баннер "Сейчас играет" -->
+          <div class="now-playing-banner">
+            <h2>Выберите трек</h2>
+            <p>Выберите трек для воспроизведения</p>
+          </div>
+
+          <!-- Главная область с треками -->
+          <div class="tracks-container">
+            <div class="tracks-header">
+              <h2 id="current-playlist-name">Треки</h2>
+              <div class="view-controls">
+                <button id="grid-view-btn" class="view-btn active" title="Сетка">
+                  <span class="material-icons">grid_view</span>
+                </button>
+                <button id="list-view-btn" class="view-btn" title="Список">
+                  <span class="material-icons">view_list</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Контейнер для отображения треков -->
+            <div id="tracks-grid" class="tracks-grid">
+              <!-- Треки будут добавлены через JavaScript -->
+              <div class="empty-state">
+                <span class="material-icons">music_note</span>
+                <p>Нет доступных треков</p>
+                <button id="add-tracks-btn" class="primary-btn">Добавить треки</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Библиотека -->
+        <div class="content-section" id="library-section" style="display: none;">
+          <div class="toolbar">
+            <h2 class="section-title">Библиотека</h2>
+            <div class="toolbar-actions">
+              <div class="search-container library-search">
+                <span class="material-icons">search</span>
+                <input type="text" id="library-search-input" placeholder="Поиск в библиотеке...">
+              </div>
+              <button id="import-library-btn" class="action-btn" title="Добавить музыку">
+                <span class="material-icons">add</span>
+                <span>Добавить музыку</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="library-container">
+            <div class="library-header">
+              <div class="column">Название</div>
+              <div class="column">Исполнитель</div>
+              <div class="column">Длительность</div>
+              <div class="column">Действия</div>
+            </div>
+            <div id="library-tracks" class="library-tracks-list">
+              <!-- Треки библиотеки будут добавлены через JavaScript -->
+              <div class="empty-state">
+                <span class="material-icons">library_music</span>
+                <p>Ваша библиотека пуста</p>
+                <p>Добавьте музыку или выполните поиск MP3 файлов на компьютере</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Настройки -->
+        <div class="content-section" id="settings-section" style="display: none;">
+          <div class="toolbar">
+            <h2 class="section-title">Настройки</h2>
+          </div>
+          
+          <div class="settings-container">
+            <div class="settings-group">
+              <h3>Общие настройки</h3>
+              
+              <div class="setting-item">
+                <div class="setting-label">Тема оформления</div>
+                <div class="setting-control">
+                  <select id="theme-select">
+                    <option value="dark">Темная</option>
+                    <option value="light">Светлая</option>
+                    <option value="system">Системная</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="setting-item">
+                <div class="setting-label">Запускать при старте Windows</div>
+                <div class="setting-control">
+                  <label class="toggle disabled-toggle">
+                    <input type="checkbox" id="autostart-toggle" disabled>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="setting-item">
+                <div class="setting-label">Запускать свернутым <span class="dev-badge">В разработке</span></div>
+                <div class="setting-control">
+                  <label class="toggle disabled-toggle">
+                    <input type="checkbox" id="start-minimized-toggle" disabled>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="settings-group">
+              <h3>Настройки горячих клавиш</h3>
+              <button id="reset-hotkeys-btn" class="secondary-btn">Сбросить все</button>
+            </div>
+            
+            <div class="settings-group">
+              <h3>О программе</h3>
+              <div class="about-info">
+                <p>SloNick 2.0 Beta</p>
+                <p>Version: 1.0.0</p>
+                <p>© 2025 NeonSamurai Team</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Нижняя панель плеера -->
+    <div class="player-bar">
+      <div class="player-content">
+        <div class="now-playing">
+          <div class="track-info">
+            <div id="current-track-title" class="track-title">Нет воспроизводимого трека</div>
+            <div id="current-track-artist" class="track-artist">Выберите трек для воспроизведения</div>
+          </div>
+        </div>
+        <div class="player-controls">
+          <button id="shuffle-btn" class="control-btn" title="Перемешать">
+            <span class="material-icons">shuffle</span>
+          </button>
+          <button id="prev-btn" class="control-btn" title="Предыдущий трек">
+            <span class="material-icons">skip_previous</span>
+          </button>
+          <button id="play-btn" class="control-btn play-btn" title="Воспроизвести">
+            <span class="material-icons">play_arrow</span>
+          </button>
+          <button id="next-btn" class="control-btn" title="Следующий трек">
+            <span class="material-icons">skip_next</span>
+          </button>
+          <button id="repeat-btn" class="control-btn" title="Повторить">
+            <span class="material-icons">repeat</span>
+          </button>
+        </div>
+        <div class="player-volume">
+          <span class="material-icons volume-icon">volume_up</span>
+          <div class="volume-slider-container">
+            <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="80">
+          </div>
+        </div>
+      </div>
+      <div class="player-timeline">
+        <span id="current-time" class="time">0:00</span>
+        <div class="progress-container">
+          <div id="progress-bar" class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+        <span id="duration" class="time">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для создания плейлиста -->
+  <div id="create-playlist-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Создать новый плейлист</h3>
+        <button class="close-btn" onclick="closeModal('create-playlist-modal')">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="playlist-name">Название плейлиста</label>
+          <input type="text" id="playlist-name" placeholder="Введите название..." maxlength="50" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-playlist-btn" class="secondary-btn">Отмена</button>
+        <button id="create-playlist-btn" class="primary-btn" onclick="createPlaylist()">Создать</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Модальное окно для назначения горячих клавиш -->
+  <div id="hotkey-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Назначить горячую клавишу</h3>
+        <button class="close-btn" onclick="closeModal('hotkey-modal')">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="hotkey-track-info" class="track-info-large">
+          <!-- Информация о треке будет добавлена через JavaScript -->
+        </div>
+        <!-- Содержимое для ввода клавиши будет добавлено через JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-hotkey-btn" class="secondary-btn">Отмена</button>
+        <button id="assign-hotkey-btn" class="primary-btn">Назначить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Справка по горячим клавишам SoundPad -->
+  <div id="hotkeys-help-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Горячие клавиши SoundPad</h3>
+        <button class="close-btn">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="hotkeys-list">
+          <div class="hotkey-item">
+            <span class="hotkey-combo">F1-F12</span>
+            <span class="hotkey-desc">Воспроизведение назначенных звуков</span>
+          </div>
+          <div class="hotkey-item">
+            <span class="hotkey-combo">Ctrl+Alt+P</span>
+            <span class="hotkey-desc">Воспроизведение/Пауза</span>
+          </div>
+          <div class="hotkey-item">
+            <span class="hotkey-combo">Ctrl+Alt+→</span>
+            <span class="hotkey-desc">Следующий трек</span>
+          </div>
+          <div class="hotkey-item">
+            <span class="hotkey-combo">Ctrl+Alt+←</span>
+            <span class="hotkey-desc">Предыдущий трек</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close-help-btn" class="primary-btn">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для добавления трека в плейлист -->
+  <div id="add-to-playlist-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Добавить трек в плейлист</h3>
+        <button class="close-btn">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="track-info-large" id="add-track-info">
+          <!-- Информация о треке будет добавлена через JavaScript -->
+        </div>
+        <div class="playlists-selection">
+          <p>Выберите плейлист:</p>
+          <div id="playlist-selection-list" class="playlist-selection-list">
+            <!-- Список плейлистов будет добавлен через JavaScript -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-add-to-playlist-btn" class="secondary-btn">Отмена</button>
+        <button id="add-to-playlist-btn" class="primary-btn">Добавить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Скрипты -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
